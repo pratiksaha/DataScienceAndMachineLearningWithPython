@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from scipy.stats import norm
-from pylab import randn
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -102,8 +101,8 @@ plt.bar(range(0,5), values, color= colors)
 plt.show()
 
 print "scatter plot"
-X = randn(500)
-Y = randn(500)
+X = np.random.randn(500)
+Y = np.random.randn(500)
 plt.scatter(X,Y)
 plt.show()
 
