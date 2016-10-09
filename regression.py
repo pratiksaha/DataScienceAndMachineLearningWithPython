@@ -5,6 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as sp
 import sklearn.metrics as skm
+import pandas as pd
+import statsmodels.api as sm
 
 np.random.seed(int(time.time()))
 pageSpeeds = np.random.normal(3.0, 1.0, 1000)
@@ -73,3 +75,28 @@ print "Best r^2 value is %s for degree %s" %(best_r2, best_deg)
 print "Comparision for degree v/s r^2 :"
 for key, value in degree_r2_dict.iteritems():
     print "%s => %s" %(key, value)
+print ""
+
+print "Multivariate Regression"
+df = pd.read_excel("./data/cars.xls")
+print df.head()
+#Convert some data from Categorical data to Ordinal Data
+df['Make_ord'] = pd.Categorical(df.Make).codes
+df['Model_ord'] = pd.Categorical(df.Model).codes
+df['Trim_ord'] = pd.Categorical(df.Trim).codes
+df['Type_ord'] = pd.Categorical(df.Type).codes
+print "Fitting Prices to Mileage, Model and Doors"
+X = df[['Mileage', 'Model_ord', 'Doors']]
+y = df[['Price']]
+X1 = sm.add_constant(X)
+est = sm.OLS(y, X1).fit() #fit using Ordinary Least Squares
+print est.summary()
+print y.groupby(df.Doors).mean()
+print y.groupby(df.Make_ord).mean()
+print y.groupby(df.Model_ord).mean()
+print y.groupby(df.Trim_ord).mean()
+print y.groupby(df.Type_ord).mean()
+print "Fitting Prices to Mileage, Make, Model, Trim and Type"
+X2 = df[['Mileage', 'Make_ord', 'Model_ord', 'Trim_ord', 'Type_ord']]
+est = sm.OLS(y, X2).fit()
+print est.summary()
