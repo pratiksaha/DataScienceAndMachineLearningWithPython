@@ -50,7 +50,7 @@ print ""
 
 degree_r2_dict = {}
 best_deg = 0
-best_r2 = 0.0
+best_r2 = -1.0
 print "Fitting polynomials from degree 1 to 20\n" 
 for i in range(20):
     deg = i+1
@@ -66,7 +66,9 @@ for i in range(20):
         best_r2 = r2
         best_deg = deg
     degree_r2_dict[deg] = r2
-    nos = np.linspace(0, 7, 100)
+    axes = plt.axes()
+    axes.set_xlim([0,7])
+    axes.set_ylim([0, 500])
     plt.scatter(x, y)
     plt.plot(nos, poly_eqn(nos), c='r')
     plt.show()
